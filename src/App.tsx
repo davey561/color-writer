@@ -31,9 +31,9 @@ const App: React.FC = () => {
         const [targetHue, targetSaturation, targetLightness] = targetMatch.slice(1).map(Number)
 
         // Smoothly transition each HSL component with even smaller steps
-        const newHue = approachValue(prevHue, targetHue, 0.01) // Extremely small step for hue
-        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.005)
-        const newLightness = approachValue(prevLightness, targetLightness, 0.005)
+        const newHue = approachValue(prevHue, targetHue, 0.005) // Extremely small step for hue
+        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.002)
+        const newLightness = approachValue(prevLightness, targetLightness, 0.002)
 
         return `hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`
       })
