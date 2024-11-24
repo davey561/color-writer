@@ -13,7 +13,7 @@ const App: React.FC = () => {
   function generateBackground(inputText: string): string {
     const hue = (inputText.length * 5) % 360 // Extremely small hue change for subtle shifts
     const saturation = 15 + (inputText.length % 5) // Lower saturation for minimal shifts
-    const lightness = 15 + (inputText.length % 2) // Keep lightness low for uniform darkness
+    const lightness = 20 + (inputText.length % 2) // Keep lightness low for uniform darkness
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
 
@@ -70,7 +70,7 @@ const App: React.FC = () => {
         className="editor"
         value={text}
         onChange={handleChange}
-        placeholder="Start typing..."
+        placeholder="Colors evolve as you type..."
         autoFocus
       />
     </div>
