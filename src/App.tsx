@@ -3,14 +3,14 @@ import "./styles.css"
 
 const App: React.FC = () => {
   const [text, setText] = useState("")
-  const [currentBackground, setCurrentBackground] = useState("hsl(0, 0%, 0%)")
+  const [currentBackground, setCurrentBackground] = useState("hsl(0, 0%, 10%)")
   const [targetBackground, setTargetBackground] = useState(generateBackground(""))
 
   // Generate a new background color based on text input
   function generateBackground(inputText: string): string {
-    const hue = (inputText.length * 30) % 360 // Rotate hue based on text length
-    const saturation = 60 + (inputText.length % 40) // Adjust saturation
-    const lightness = 40 + (inputText.length % 30) // Adjust lightness
+    const hue = (inputText.length * 15) % 360 // Smaller hue change for less drastic shifts
+    const saturation = 25 + (inputText.length % 20) // Keep saturation low for subtle shifts
+    const lightness = 15 + (inputText.length % 10) // Keep lightness low for uniform darkness
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
 
@@ -19,18 +19,18 @@ const App: React.FC = () => {
     const interval = setInterval(() => {
       setCurrentBackground((prevBackground) => {
         // Parse HSL values from the current and target backgrounds
-        const prevMatch = prevBackground.match(/hsl\\((\\d+), (\\d+)%, (\\d+)%\\)/)
-        const targetMatch = targetBackground.match(/hsl\\((\\d+), (\\d+)%, (\\d+)%\\)/)
+        const prevMatch = prevBackground.match(/hsl\((\d+), (\d+)%, (\d+)%\)/)
+        const targetMatch = targetBackground.match(/hsl\((\d+), (\d+)%, (\d+)%\)/)
 
         if (!prevMatch || !targetMatch) return targetBackground // Fallback if parsing fails
 
         const [prevHue, prevSaturation, prevLightness] = prevMatch.slice(1).map(Number)
         const [targetHue, targetSaturation, targetLightness] = targetMatch.slice(1).map(Number)
 
-        // Smoothly transition each HSL component
-        const newHue = approachValue(prevHue, targetHue, 2) // Adjust hue smoothly
-        const newSaturation = approachValue(prevSaturation, targetSaturation, 1)
-        const newLightness = approachValue(prevLightness, targetLightness, 1)
+        // Smoothly transition each HSL component with smaller steps
+        const newHue = approachValue(prevHue, targetHue, 1) // Smaller step for hue
+        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.5)
+        const newLightness = approachValue(prevLightness, targetLightness, 0.5)
 
         // Stop animation when close enough to the target
         if (
@@ -43,7 +43,7 @@ const App: React.FC = () => {
 
         return `hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`
       })
-    }, 30) // Adjust interval for smooth transitions
+    }, 0) // Adjust interval for smoother transitions
 
     return () => clearInterval(interval)
   }, [targetBackground])

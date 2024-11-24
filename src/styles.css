@@ -8,9 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000; /* Default dark background */
-
-  transition: background 2s ease; /* Smooth background transitions */
+  background: hsl(0, 0%, 10%); /* Uniformly darker default background */
+  transition: background 0.2s linear; /* Smooth background transitions */
 }
 
 .editor {
