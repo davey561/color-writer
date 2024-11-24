@@ -11,9 +11,9 @@ const App: React.FC = () => {
 
   // Generate a new background color based on text input
   function generateBackground(inputText: string): string {
-    const hue = (inputText.length * 15) % 360 // Smaller hue change for less drastic shifts
-    const saturation = 25 + (inputText.length % 20) // Keep saturation low for subtle shifts
-    const lightness = 15 + (inputText.length % 10) // Keep lightness low for uniform darkness
+    const hue = (inputText.length * 5) % 360 // Extremely small hue change for subtle shifts
+    const saturation = 15 + (inputText.length % 5) // Lower saturation for minimal shifts
+    const lightness = 10 + (inputText.length % 2) // Keep lightness low for uniform darkness
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
 
@@ -30,10 +30,10 @@ const App: React.FC = () => {
         const [prevHue, prevSaturation, prevLightness] = prevMatch.slice(1).map(Number)
         const [targetHue, targetSaturation, targetLightness] = targetMatch.slice(1).map(Number)
 
-        // Smoothly transition each HSL component with smaller steps
-        const newHue = approachValue(prevHue, targetHue, 0.2) // Smaller step for hue
-        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.1)
-        const newLightness = approachValue(prevLightness, targetLightness, 0.1)
+        // Smoothly transition each HSL component with even smaller steps
+        const newHue = approachValue(prevHue, targetHue, 0.01) // Extremely small step for hue
+        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.005)
+        const newLightness = approachValue(prevLightness, targetLightness, 0.005)
 
         return `hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`
       })
