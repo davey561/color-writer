@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react"
 import "./styles.css"
 
 const App: React.FC = () => {
-  const [text, setText] = useState("")
+  const [text, setText] = useState(() => {
+    // Load text from localStorage on initialization
+    return localStorage.getItem("editor-text") || ""
+  })
   const [currentBackground, setCurrentBackground] = useState("hsl(0, 0%, 10%)")
-  const [targetBackground, setTargetBackground] = useState(generateBackground(""))
+  const [targetBackground, setTargetBackground] = useState(generateBackground(text))
 
   // Generate a new background color based on text input
   function generateBackground(inputText: string): string {
@@ -28,25 +31,21 @@ const App: React.FC = () => {
         const [targetHue, targetSaturation, targetLightness] = targetMatch.slice(1).map(Number)
 
         // Smoothly transition each HSL component with smaller steps
-        const newHue = approachValue(prevHue, targetHue, 1) // Smaller step for hue
-        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.5)
-        const newLightness = approachValue(prevLightness, targetLightness, 0.5)
-
-        // Stop animation when close enough to the target
-        if (
-          newHue === targetHue &&
-          newSaturation === targetSaturation &&
-          newLightness === targetLightness
-        ) {
-          clearInterval(interval)
-        }
+        const newHue = approachValue(prevHue, targetHue, 0.2) // Smaller step for hue
+        const newSaturation = approachValue(prevSaturation, targetSaturation, 0.1)
+        const newLightness = approachValue(prevLightness, targetLightness, 0.1)
 
         return `hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`
       })
-    }, 0) // Adjust interval for smoother transitions
+    }, 0) // No timeout delay
 
     return () => clearInterval(interval)
   }, [targetBackground])
+
+  // Save text to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("editor-text", text)
+  }, [text])
 
   // Helper function to approach a target value smoothly
   const approachValue = (current: number, target: number, step: number): number => {
